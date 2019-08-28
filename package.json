@@ -1,0 +1,22 @@
+{
+  "name": "azcloud-crm-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kamranpoladov/azcloud-crm-backend.git"
+  },
+  "author": "bottom text",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kamranpoladov/azcloud-crm-backend/issues"
+  },
+  "homepage": "https://github.com/kamranpoladov/azcloud-crm-backend#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
