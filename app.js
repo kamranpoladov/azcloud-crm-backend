@@ -1,8 +1,11 @@
 require('dotenv').config();
 require('./db/mongoose');
+const Employee = require('./db/models/employee');
 
 const express = require('express');
 const app = express();
+
+const employeeRouter = require('./api/routes/employee');
 
 const port = process.env.PORT || 3000;
 
@@ -26,7 +29,7 @@ app.use((request, response, next) => {
     next();
 });
 
-//paths
+app.use(employeeRouter);
 
 app.use((request, response, next) => {
     const error = new Error('Path not found');
