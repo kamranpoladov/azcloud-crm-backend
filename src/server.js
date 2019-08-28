@@ -1,10 +1,9 @@
-const express = require('express');
 require('dotenv').config();
 require('./db/mongoose');
 
-const app = express();
+const http = require('http');
+const app = require('./app');
 const port = process.env.PORT || 3000;
+const server = http.createServer(app);
 
-app.listen(port, () => {
-    console.log(`I love you ${port}`);
-})
+server.listen(port);
