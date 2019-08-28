@@ -3,6 +3,7 @@ const Employee = require('../../db/models/employee');
 const router = new express.Router();
 
 const superAdmin = require('../middleware/roles/superAdmin');
+const auth = require('../middleware/auth');
 
 router.post('/employees/create', superAdmin, async (req, res) => {
     const employee = new Employee(req.body);
@@ -23,6 +24,28 @@ router.post('/employees/login', async (req, res) => {
     } catch (err) {
         console.log(err.message)
         res.status(400).send();
+    }
+});
+
+router.post('/employees/logout', auth, async (req, res) => {
+    try {
+        req.employee.tokens = req.employee.tokens.filter(t => t.token !== req.token);
+        await req.employee.save();
+
+        res.status(200).send();
+    } catch (err) {
+        res.status(500).send();
+    }
+});
+
+router.post('/employees/logoutAll', auth, async (req, res) => {
+    try {
+        req.employee.tokens = [];
+        await req.employee.save();
+
+        res.status(200).send();
+    } catch (err) {
+        res.status(500).send();
     }
 });
 
