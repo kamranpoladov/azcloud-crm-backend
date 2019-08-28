@@ -1,10 +1,7 @@
 const to = function (promise) {
     return promise
-        .then(data => {
-            return [null, data];
-        }).catch(err =>
-            [pe(err)]
-        );
+        .then(data => [null, data])
+        .catch(error => [error]);
 };
 
 const te = function (errorMessage, log) {

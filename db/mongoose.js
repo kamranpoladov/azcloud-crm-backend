@@ -4,7 +4,7 @@ const { to, te } = require('../utilities');
 (async function () {
     [error] = await to(
         mongoose.connect(
-            process.env.MONGO_CONNECTION_STRING,
+            process.env.MONGODB_URL,
             {
                 useNewUrlParser: true,
                 useFindAndModify: false,
