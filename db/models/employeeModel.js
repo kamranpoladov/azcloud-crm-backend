@@ -46,7 +46,7 @@ employeeSchema.methods.toJSON = function () {
     employee.password = employee.tokens = undefined;
 
     return employee;
-}
+};
 
 employeeSchema.methods.generateAuthToken = async function () {
     const token = jwt.sign({ _id: this._id.toString() }, process.env.JWT_SECRET, { expiresIn: '30d' });
@@ -55,7 +55,7 @@ employeeSchema.methods.generateAuthToken = async function () {
     await this.save();
 
     return token;
-}
+};
 
 employeeSchema.statics.findByCredentials = async (email, password) => {
     const employee = await Employee.findOne({ email });

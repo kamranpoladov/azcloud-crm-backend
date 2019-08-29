@@ -1,10 +1,10 @@
 const express = require('express');
-const Customer = require('../../db/models/customer');
+const Customer = require('../../db/models/customerModel');
 const router = new express.Router();
 
 const role = require('../middleware/role');
 
-router.post('/customers/create', role(['superAdmin', 'salesTeam']), async (req, res) => {
+router.post('/create', role(['superAdmin', 'salesTeam']), async (req, res) => {
     const customer = new Customer(req.body);
     try {
         await customer.save();

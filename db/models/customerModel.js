@@ -74,12 +74,6 @@ const customerSchema = new mongoose.Schema({
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'Employee'
     }
-})
-
-customerSchema.virtual('leads', {
-    ref: 'Lead',
-    localField: '_id',
-    foreignField: 'customer'
 });
 
 const Customer = mongoose.model('Customer', customerSchema);

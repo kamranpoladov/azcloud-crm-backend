@@ -4,8 +4,11 @@ require('./db/mongoose');
 const express = require('express');
 const app = express();
 
-const employeeRouter = require('./api/routes/employee');
-const customerRouter = require('./api/routes/customer');
+const employeeRouter = require('./api/routes/employeeRoutes');
+const customerRouter = require('./api/routes/customerRoutes');
+const statisticsRouter = require('./api/routes/info/statisticsRoutes');
+const leadRouter = require('./api/routes/info/leadRoutes');
+const warehouseRouter = require('./api/routes/info/warehouseRoutes');
 
 const port = process.env.PORT || 3000;
 
@@ -29,11 +32,11 @@ app.use((request, response, next) => {
     next();
 });
 
-app.use(employeeRouter);
-app.use(customerRouter);
-// app.use('/info/statistics', statisticsRouter);
-// app.use('info/leads', leadsRouter);
-// app.use('info/warehouse', warehouseRouter);
+app.use('/employees', employeeRouter);
+app.use('/customers', customerRouter);
+app.use('/info/statistics', statisticsRouter);
+app.use('/info/leads', leadRouter);
+app.use('/info/warehouse', warehouseRouter);
 
 app.use((request, response, next) => {
     const error = new Error('Path not found');

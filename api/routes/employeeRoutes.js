@@ -1,12 +1,12 @@
 const express = require('express');
-const Employee = require('../../db/models/employee');
+const Employee = require('../../db/models/employeeModel');
 const router = new express.Router();
 const ObjectId = require('mongoose').Types.ObjectId;
 
 const auth = require('../middleware/authorization');
 const role = require('../middleware/role');
 
-router.get('/employees/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
     const _id = req.params.id;
     if (!ObjectId.isValid(_id)) {
         return res.status(400).send()
@@ -23,7 +23,7 @@ router.get('/employees/:id', async (req, res) => {
     }
 })
 
-router.post('/employees/create', role(['superAdmin']), async (req, res) => {
+router.post('/create', role(['superAdmin']), async (req, res) => {
     const employee = new Employee(req.body);
 
     try {
@@ -34,7 +34,7 @@ router.post('/employees/create', role(['superAdmin']), async (req, res) => {
     }
 });
 
-router.post('/employees/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     try {
         const employee = await Employee.findByCredentials(req.body.email, req.body.password);
         const token = await employee.generateAuthToken();
@@ -44,7 +44,7 @@ router.post('/employees/login', async (req, res) => {
     }
 });
 
-router.post('/employees/logout', auth, async (req, res) => {
+router.post('/logout', auth, async (req, res) => {
     try {
         req.employee.tokens = req.employee.tokens.filter(t => t.token !== req.token);
         await req.employee.save();
@@ -55,7 +55,7 @@ router.post('/employees/logout', auth, async (req, res) => {
     }
 });
 
-router.post('/employees/logoutAll', auth, async (req, res) => {
+router.post('/logoutAll', auth, async (req, res) => {
     try {
         req.employee.tokens = [];
         await req.employee.save();
