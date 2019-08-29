@@ -10,7 +10,7 @@ router.post('/customers/create', role(['superAdmin', 'salesTeam']), async (req, 
         await customer.save();
         res.status(200).send({ customer });
     } catch (err) {
-        res.status(400).send(err.message);
+        res.status(500).send(err.message);
     }
 })
 

@@ -1,17 +1,16 @@
 const mongoose = require('mongoose');
-const to = require('../utilities');
 
 (async () => {
-    [error] = await to(
-        mongoose.connect(
+    try {
+        await mongoose.connect(
             process.env.MONGODB_URL,
             {
                 useNewUrlParser: true,
                 useFindAndModify: false,
                 useCreateIndex: true
             }
-        )
-    );
-
-    if (error) throw new Error('Couldn\'t connect to MongoDB');
+        );
+    } catch (err) {
+        throw new Error(err.message);
+    }
 })();

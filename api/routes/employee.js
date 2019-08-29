@@ -1,14 +1,15 @@
 const express = require('express');
 const Employee = require('../../db/models/employee');
 const router = new express.Router();
+const ObjectId = require('mongoose').Types.ObjectId;
 
 const auth = require('../middleware/auth');
 const role = require('../middleware/role');
 
 router.get('/employees/:id', async (req, res) => {
     const _id = req.params.id;
-    if (!_id.match(/^[0-9a-fA-F]{24}$/)) {
-        return res.status(404).send()
+    if (!ObjectId.isValid(_id)) {
+        return res.status(400).send()
     }
 
     try {
@@ -18,7 +19,7 @@ router.get('/employees/:id', async (req, res) => {
 
         res.status(200).send(employee);
     } catch (err) {
-        
+        res.status(500).send(err.message);
     }
 })
 
@@ -29,7 +30,7 @@ router.post('/employees/create', role(['superAdmin']), async (req, res) => {
         await employee.save();
         res.status(200).send({ employee });
     } catch (err) {
-        res.status(400).send(err.message);
+        res.status(500).send(err.message);
     }
 });
 
@@ -39,8 +40,7 @@ router.post('/employees/login', async (req, res) => {
         const token = await employee.generateAuthToken();
         res.status(200).send({ employee, token });
     } catch (err) {
-        console.log(err.message)
-        res.status(400).send();
+        res.status(500).send(err.message);
     }
 });
 
@@ -51,7 +51,7 @@ router.post('/employees/logout', auth, async (req, res) => {
 
         res.status(200).send();
     } catch (err) {
-        res.status(500).send();
+        res.status(500).send(err.message);
     }
 });
 
@@ -62,7 +62,7 @@ router.post('/employees/logoutAll', auth, async (req, res) => {
 
         res.status(200).send();
     } catch (err) {
-        res.status(500).send();
+        res.status(500).send(err.message);
     }
 });
 
