@@ -1,7 +1,6 @@
 const Employee = require('../../db/models/employeeModel');
 const Lead = require('../../db/models/leadModel');
 
-        'rejection': ['edit'],
 /*(request, response, next) => {
     try {
         const leadId = request.params.leadId;
