@@ -2,7 +2,7 @@ const express = require('express');
 const router = new express.Router();
 const Lead = require('../../../db/models/leadModel');
 
-const role = require('../../middleware/role');
+const setRoleRoutes = require('../../middleware/setRoleRoutes');
 
 router.get('/', async (req, res) => {
     try {
