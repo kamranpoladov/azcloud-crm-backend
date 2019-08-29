@@ -36,8 +36,7 @@ leadSchema.methods.calculateTotalAmount = function () {
 
 leadSchema.methods.actions = function (employeeRole) {
     const leadStatus = this.status;
-
-    return require('../../permissions.js')[employeeRole][leadStatus];
+    return require('../../api/permissions')[employeeRole][leadStatus];
 };
 
 const Lead = mongoose.model('Lead', leadSchema);

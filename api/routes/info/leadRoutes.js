@@ -13,12 +13,11 @@ router.get('/',
     async (req, res) => {
         try {
             const employeeRole = req.app.locals.employee.role;
-
             let leads = await Lead.find({});
             leads.forEach(lead => {
                 lead.actions = lead.actions(employeeRole);
+                console.log(lead.actions(employeeRole))
             });
-
             res.status(200).send(leads);
         } catch (error) {
             res.status(500).send(error.message);

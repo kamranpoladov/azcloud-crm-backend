@@ -11,7 +11,7 @@ const authorizeAndPass = (shouldPass) => {
             if (!employee) throw new Error('Please, authenticate');
 
             if (shouldPass) {
-                req.app.locals.employee = employee.doc;
+                req.app.locals.employee = employee;
                 req.app.locals.token = token;
             }
 
