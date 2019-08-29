@@ -21,6 +21,7 @@ const leadSchema = new mongoose.Schema({
     },
     status: {
         type: String,
+        enum: ['0%', '10%', '20%', '30%', '40%', '60%', '80%', '100%', 'rejection'],
         required: true
     },
     customer: {
@@ -37,7 +38,7 @@ leadSchema.methods.calculateTotalAmount = function () {
 leadSchema.methods.actions = function (employeeRole) {
     const leadStatus = this.status;
 
-    return require('../../permissions.js')[employeeRole][leadStatus];
+    return require('../../api/permissions.js')[employeeRole][leadStatus];
 };
 
 const Lead = mongoose.model('Lead', leadSchema);

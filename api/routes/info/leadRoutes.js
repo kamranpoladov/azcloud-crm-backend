@@ -6,7 +6,7 @@ const nodemailer = require('nodemailer');
 const Lead = require('../../../db/models/leadModel');
 const Customer = require('../../../db/models/customerModel');
 const authorizeAndPass = require('../../middleware/authorization');
-const password = require('../../../config.json').password;
+//const password = require('../../../config.json').password;
 
 router.get('/',
     authorizeAndPass(true),
@@ -14,12 +14,15 @@ router.get('/',
         try {
             const employeeRole = req.app.locals.employee.role;
 
-            let leads = await Lead.find({});
-            leads.forEach(lead => {
-                lead.actions = lead.actions(employeeRole);
+            const leads = await Lead.find({});
+            const response = leads.map(lead => {
+                return {
+                    ...lead._doc,
+                    actions: lead.actions(employeeRole)
+                };
             });
 
-            res.status(200).send(leads);
+            res.status(200).send(response);
         } catch (error) {
             res.status(500).send(error.message);
         }
@@ -59,10 +62,11 @@ router.get('/:id/proposal', async (req, res) => {
         const html = `
             <h1>Hi, ${customer.companyLegalName}</h1>
             <h4>You can purchase <i>service name once warehouse created</i> only for ${lead.calculateTotalAmount()}</h4>
-        `
+        `;
+
         pdf.create(html, { format: 'Letter' }).toFile('./proposals/proposal.pdf', (err, result) => {
             if (err) res.status(500).send();
-        })
+        });
 
         res.download('../../../proposals/proposal.pdf');
 
@@ -76,7 +80,7 @@ router.get('/:id/proposal', async (req, res) => {
                     pass: password
                 }
             });
-            let info = await transporter.sendMail({
+            /*let info = await transporter.sendMail({
                 from: 'kamranpoladov1803@icloud.com',
                 to: '18kamranpoladov03@gmail.com',
                 subject: 'Proposal', // Subject line
@@ -87,7 +91,7 @@ router.get('/:id/proposal', async (req, res) => {
                         content: buffer.toString('utf8')
                     }
                 ]
-            });
+            });*/
             res.status(200).send();
         })
     } catch (error) {
