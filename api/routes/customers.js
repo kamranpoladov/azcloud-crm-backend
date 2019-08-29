@@ -9,8 +9,8 @@ router.post('/customers/create', role(['superAdmin', 'salesTeam']), async (req, 
     try {
         await customer.save();
         res.status(200).send({ customer });
-    } catch (err) {
-        res.status(500).send(err.message);
+    } catch (error) {
+        res.status(500).send(error.message);
     }
 })
 

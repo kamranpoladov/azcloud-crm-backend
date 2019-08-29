@@ -7,14 +7,14 @@ const auth = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const employee = await Employee.findOne({ _id: decoded._id, 'tokens.token': token });
 
-        if (!employee) throw new Error("Please, authenticate");
+        if (!employee) throw new Error('Please, authenticate');
 
         req.employee = employee;
         req.token = token;
 
         next()
-    } catch (err) {
-        res.status(400).send({ err: err.message });
+    } catch (error) {
+        res.status(400).send({ error: error.message });
     }
 }
 

@@ -63,13 +63,16 @@ const customerSchema = new mongoose.Schema({
         }
     },
     salesOwner: {
-        type: mongoose.SchemaTypes.ObjectId
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'Employee'
     },
     legalOwner: {
-        type: mongoose.SchemaTypes.ObjectId
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'Employee'
     },
     technicalOwner: {
-        type: mongoose.SchemaTypes.ObjectId
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'Employee'
     }
 })
 

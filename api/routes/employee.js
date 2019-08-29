@@ -18,8 +18,8 @@ router.get('/employees/:id', async (req, res) => {
         if (!employee) res.status(404).send();
 
         res.status(200).send(employee);
-    } catch (err) {
-        res.status(500).send(err.message);
+    } catch (error) {
+        res.status(500).send(error.message);
     }
 })
 
@@ -29,8 +29,8 @@ router.post('/employees/create', role(['superAdmin']), async (req, res) => {
     try {
         await employee.save();
         res.status(200).send({ employee });
-    } catch (err) {
-        res.status(500).send(err.message);
+    } catch (error) {
+        res.status(500).send(error.message);
     }
 });
 
@@ -39,8 +39,8 @@ router.post('/employees/login', async (req, res) => {
         const employee = await Employee.findByCredentials(req.body.email, req.body.password);
         const token = await employee.generateAuthToken();
         res.status(200).send({ employee, token });
-    } catch (err) {
-        res.status(500).send(err.message);
+    } catch (error) {
+        res.status(500).send(error.message);
     }
 });
 
@@ -50,8 +50,8 @@ router.post('/employees/logout', auth, async (req, res) => {
         await req.employee.save();
 
         res.status(200).send();
-    } catch (err) {
-        res.status(500).send(err.message);
+    } catch (error) {
+        res.status(500).send(error.message);
     }
 });
 
@@ -61,8 +61,8 @@ router.post('/employees/logoutAll', auth, async (req, res) => {
         await req.employee.save();
 
         res.status(200).send();
-    } catch (err) {
-        res.status(500).send(err.message);
+    } catch (error) {
+        res.status(500).send(error.message);
     }
 });
 

@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
                 useCreateIndex: true
             }
         );
-    } catch (err) {
-        throw new Error(err.message);
+    } catch (error) {
+        throw new Error(error.message);
     }
 })();

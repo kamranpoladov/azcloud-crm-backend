@@ -11,8 +11,8 @@ const role = (roles) => {
             if (!employee || !employee.roles.some(r => roles.includes(r.role))) throw new Error('No valid permission');
 
             next();
-        } catch (err) {
-            res.status(400).send({ err: err.message });
+        } catch (error) {
+            res.status(400).send({ error: error.message });
         }
     }
 }
