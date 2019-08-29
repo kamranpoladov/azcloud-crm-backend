@@ -76,6 +76,12 @@ const customerSchema = new mongoose.Schema({
     }
 })
 
+customerSchema.virtual('leads', {
+    ref: 'Lead',
+    localField: '_id',
+    foreignField: 'customer'
+});
+
 const Customer = mongoose.model('Customer', customerSchema);
 
 module.exports = Customer;
