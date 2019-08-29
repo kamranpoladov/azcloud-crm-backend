@@ -6,6 +6,7 @@ const nodemailer = require('nodemailer');
 const Lead = require('../../../db/models/leadModel');
 const Customer = require('../../../db/models/customerModel');
 const authorizeAndPass = require('../../middleware/authorization');
+const password = require('../../../config.json').password;
 
 router.get('/',
     authorizeAndPass(true),
@@ -63,21 +64,21 @@ router.get('/:id/proposal', async (req, res) => {
             if (err) res.status(500).send();
         })
 
+        res.download('../../../proposals/proposal.pdf');
+
         fs.readFile('../../../proposals/proposal.pdf', async (error, buffer) => {
-            let testAccount = await nodemailer.createTestAccount();
             let transporter = nodemailer.createTransport({
-                host: 'smtp.ethereal.email',
-                port: 587,
-                secure: false,
+                // host: 'icloud.com',
+                // port: 587,
+                // secure: false,
                 auth: {
-                    user: testAccount.user, // generated ethereal user
-                    pass: testAccount.pass // generated ethereal password
+                    user: 'kamranpoladov1803@icloud.com',
+                    pass: password
                 }
             });
-            console.log(testAccount.user)
             let info = await transporter.sendMail({
-                from: testAccount.user, // sender address
-                to: '18kamranpoladov03@gmail.com', // list of receivers
+                from: 'kamranpoladov1803@icloud.com',
+                to: '18kamranpoladov03@gmail.com',
                 subject: 'Proposal', // Subject line
                 html: '<b>View email attachment</b>', // html body
                 attachments: [
