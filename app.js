@@ -3,6 +3,7 @@ require('./db/mongoose');
 
 const express = require('express');
 const app = express();
+const cors = require('cors');
 
 const employeeRouter = require('./api/routes/employeeRoutes');
 const customerRouter = require('./api/routes/customerRoutes');
@@ -12,6 +13,7 @@ const warehouseRouter = require('./api/routes/info/warehouseRoutes');
 
 const port = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 

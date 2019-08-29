@@ -21,7 +21,7 @@ router.get('/:id', async (req, res) => {
     } catch (error) {
         res.status(500).send(error.message);
     }
-})
+});
 
 router.post('/create', role(['superAdmin']), async (req, res) => {
     const employee = new Employee(req.body);
