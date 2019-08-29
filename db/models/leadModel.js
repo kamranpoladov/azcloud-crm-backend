@@ -34,7 +34,7 @@ leadSchema.methods.calculateTotalAmount = function () {
     return 1000;
 };
 
-leadSchema.methods.access = function (employeeRole) {
+leadSchema.methods.actions = function (employeeRole) {
     const leadStatus = this.status;
 
     return require('../../permissions.js')[employeeRole][leadStatus];

@@ -5,15 +5,24 @@ const pdf = require('html-pdf');
 const nodemailer = require('nodemailer');
 const Lead = require('../../../db/models/leadModel');
 const Customer = require('../../../db/models/customerModel');
+const authorizeAndPass = require('../../middleware/authorization');
 
-router.get('/', async (req, res) => {
-    try {
-        let leads = await Lead.find({});
-        res.status(200).send(leads);
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-});
+router.get('/',
+    authorizeAndPass(true),
+    async (req, res) => {
+        try {
+            const employeeRole = req.app.locals.employee.role;
+
+            let leads = await Lead.find({});
+            leads.forEach(lead => {
+                lead.actions = lead.actions(employeeRole);
+            });
+
+            res.status(200).send(leads);
+        } catch (error) {
+            res.status(500).send(error.message);
+        }
+    });
 
 router.post('/create', async (req, res) => {
     req.body.progress = 10;
