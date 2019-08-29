@@ -23,6 +23,10 @@ const leadSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    progress: {
+        type: Number,
+        required: true
+    },
     customer: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Customer'
