@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const Employee = require('../../db/models/employeeModel');
 
-const authorizeAndPass = (passToken) => {
+const authorizeAndPass = (shouldPass) => {
     return async (req, res, next) => {
         try {
             const token = req.header('Authorization').replace('Bearer ', '');
@@ -10,7 +10,7 @@ const authorizeAndPass = (passToken) => {
 
             if (!employee) throw new Error('Please, authenticate');
 
-            if (passToken) {
+            if (shouldPass) {
                 req.app.locals.employee = employee;
                 req.app.locals.token = token;
             }
