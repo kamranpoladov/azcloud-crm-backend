@@ -1,6 +1,5 @@
 require('dotenv').config();
 require('./db/mongoose');
-const Employee = require('./db/models/employee');
 
 const express = require('express');
 const app = express();
