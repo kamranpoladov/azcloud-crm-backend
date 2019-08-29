@@ -1,9 +1,9 @@
 const express = require('express');
-const Employee = require('../../db/models/employee');
+const Employee = require('../../db/models/employeeModel');
 const router = new express.Router();
 const ObjectId = require('mongoose').Types.ObjectId;
 
-const auth = require('../middleware/auth');
+const auth = require('../middleware/authorization');
 const role = require('../middleware/role');
 
 router.get('/employees/:id', async (req, res) => {

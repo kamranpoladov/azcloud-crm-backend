@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const Employee = require('../../db/models/employee');
+const Employee = require('../../db/models/employeeModel');
 
 const role = (roles) => {
     return async (req, res, next) => {
@@ -15,6 +15,6 @@ const role = (roles) => {
             res.status(400).send({ error: error.message });
         }
     }
-}
+};
 
 module.exports = role;
