@@ -3,7 +3,7 @@ const Employee = require('../../db/models/employeeModel');
 const router = new express.Router();
 const ObjectId = require('mongoose').Types.ObjectId;
 
-const auth = require('../middleware/authorization');
+const authorization = require('../middleware/authorization');
 const role = require('../middleware/role');
 
 router.get('/:id', async (req, res) => {
@@ -21,7 +21,7 @@ router.get('/:id', async (req, res) => {
     } catch (error) {
         res.status(500).send(error.message);
     }
-})
+});
 
 router.post('/create', role(['superAdmin']), async (req, res) => {
     const employee = new Employee(req.body);
@@ -44,7 +44,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.post('/logout', auth, async (req, res) => {
+router.post('/logout', authorization, async (req, res) => {
     try {
         req.employee.tokens = req.employee.tokens.filter(t => t.token !== req.token);
         await req.employee.save();
@@ -55,7 +55,7 @@ router.post('/logout', auth, async (req, res) => {
     }
 });
 
-router.post('/logoutAll', auth, async (req, res) => {
+router.post('/logoutAll', authorization, async (req, res) => {
     try {
         req.employee.tokens = [];
         await req.employee.save();
