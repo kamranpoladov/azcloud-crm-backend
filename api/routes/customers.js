@@ -13,3 +13,5 @@ router.post('/customers/create', role(['superAdmin', 'salesTeam']), async (req, 
         res.status(400).send(err.message);
     }
 })
+
+module.exports = router;

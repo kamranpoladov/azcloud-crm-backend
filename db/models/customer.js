@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 
 const customerSchema = new mongoose.Schema({
     companyName: {

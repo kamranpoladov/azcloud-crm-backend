@@ -6,7 +6,7 @@ const express = require('express');
 const app = express();
 
 const employeeRouter = require('./api/routes/employee');
-const customerRouter = require('./db/models/customer');
+const customerRouter = require('./api/routes/customers');
 
 const port = process.env.PORT || 3000;
 
