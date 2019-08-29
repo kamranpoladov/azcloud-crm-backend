@@ -29,5 +29,10 @@ const leadSchema = new mongoose.Schema({
     }
 });
 
+leadSchema.methods.calculateTotalAmount = function() {
+    // before warehouse is created
+    return 1000;
+}
+
 const Lead = mongoose.model('Lead', leadSchema);
 module.exports = Lead;
