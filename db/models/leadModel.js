@@ -7,9 +7,9 @@ const leadSchema = new mongoose.Schema({
         trim: true
     },
     service: {
-        type: String,
-        required: true,
-        trim: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Service',
+        required: true
     },
     startDate: {
         type: Date,
@@ -19,20 +19,15 @@ const leadSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    monthlyFee: {
-        type: Number,
-        required: true
-    },
-    progress: {
-        type: Number,
+    status: {
+        type: String,
         required: true
     },
     customer: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Customer'
     }
-})
+});
 
 const Lead = mongoose.model('Lead', leadSchema);
-
 module.exports = Lead;
