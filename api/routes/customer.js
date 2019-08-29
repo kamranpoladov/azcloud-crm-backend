@@ -1,5 +1,5 @@
 const express = require('express');
-const Customer = require('../../db/models/customerModel');
+const Customer = require('../../db/models/customer');
 const router = new express.Router();
 
 const role = require('../middleware/role');
