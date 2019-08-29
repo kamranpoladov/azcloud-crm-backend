@@ -50,7 +50,7 @@ employeeSchema.methods.toJSON = function() {
 }
 
 employeeSchema.methods.generateAuthToken = async function() {
-    const token = jwt.sign({ _id: this._id.toString() }, process.env.JWT_SECRET, { expiresIn: "1 hour"});
+    const token = jwt.sign({ _id: this._id.toString() }, process.env.JWT_SECRET, { expiresIn: "30d"});
 
     this.tokens = this.tokens.concat({ token });
     await this.save();

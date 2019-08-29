@@ -6,6 +6,7 @@ const express = require('express');
 const app = express();
 
 const employeeRouter = require('./api/routes/employee');
+const customerRouter = require('./db/models/customer');
 
 const port = process.env.PORT || 3000;
 
@@ -30,6 +31,7 @@ app.use((request, response, next) => {
 });
 
 app.use(employeeRouter);
+app.use(customerRouter);
 
 app.use((request, response, next) => {
     const error = new Error('Path not found');
