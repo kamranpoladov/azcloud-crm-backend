@@ -4,7 +4,7 @@ const router = new express.Router();
 const ObjectId = require('mongoose').Types.ObjectId;
 
 const authorizeAndPass = require('../middleware/authorization');
-const setRouteRoles = require('../middleware/setRoleRoutes');
+const roles = require('../middleware/roles');
 
 router.get('/:id',
     async (req, res) => {
@@ -26,7 +26,7 @@ router.get('/:id',
 
 router.post('/create',
     authorizeAndPass(false),
-    setRouteRoles(['superAdmin']),
+    roles(['superAdmin']),
     async (req, res) => {
         const employee = new Employee(req.body);
 
