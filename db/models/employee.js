@@ -40,17 +40,16 @@ const employeeSchema = new mongoose.Schema({
     }]
 });
 
-employeeSchema.methods.toJSON = function() {
+employeeSchema.methods.toJSON = function () {
     let employee = this.toObject();
 
-    delete employee.password;
-    delete employee.tokens;
+    employee.password = employee.tokens = undefined;
 
     return employee;
 }
 
-employeeSchema.methods.generateAuthToken = async function() {
-    const token = jwt.sign({ _id: this._id.toString() }, process.env.JWT_SECRET, { expiresIn: "30d"});
+employeeSchema.methods.generateAuthToken = async function () {
+    const token = jwt.sign({ _id: this._id.toString() }, process.env.JWT_SECRET, { expiresIn: "30d" });
 
     this.tokens = this.tokens.concat({ token });
     await this.save();
