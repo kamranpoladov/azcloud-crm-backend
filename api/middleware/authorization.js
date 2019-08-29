@@ -1,21 +1,25 @@
 const jwt = require('jsonwebtoken');
 const Employee = require('../../db/models/employeeModel');
 
-const authorization = async (req, res, next) => {
-    try {
-        const token = req.header('Authorization').replace('Bearer ', '');
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const employee = await Employee.findOne({ _id: decoded._id, 'tokens.token': token });
+const authorizeAndPass = (passToken) => {
+    return async (req, res, next) => {
+        try {
+            const token = req.header('Authorization').replace('Bearer ', '');
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            const employee = await Employee.findOne({ _id: decoded._id, 'tokens.token': token });
 
-        if (!employee) throw new Error('Please, authenticate');
+            if (!employee) throw new Error('Please, authenticate');
 
-        req.employee = employee;
-        req.token = token;
+            if (passToken) {
+                req.app.locals.employee = employee;
+                req.app.locals.token = token;
+            }
 
-        next()
-    } catch (error) {
-        res.status(400).send({ error: error.message });
+            next();
+        } catch (error) {
+            res.status(400).send({ error: error.message });
+        }
     }
 };
 
-module.exports = authorization;
+module.exports = authorizeAndPass;

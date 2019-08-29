@@ -3,67 +3,76 @@ const Employee = require('../../db/models/employeeModel');
 const router = new express.Router();
 const ObjectId = require('mongoose').Types.ObjectId;
 
-const authorization = require('../middleware/authorization');
-const role = require('../middleware/role');
+const authorizeAndPass = require('../middleware/authorization');
+const setRouteRoles = require('../middleware/setRoleRoutes');
 
-router.get('/:id', async (req, res) => {
-    const _id = req.params.id;
-    if (!ObjectId.isValid(_id)) {
-        return res.status(400).send()
-    }
+router.get('/:id',
+    async (req, res) => {
+        const _id = req.params.id;
+        if (!ObjectId.isValid(_id)) {
+            return res.status(400).send()
+        }
 
-    try {
-        const employee = await Employee.findById(_id);
+        try {
+            const employee = await Employee.findById(_id);
 
-        if (!employee) res.status(404).send();
+            if (!employee) res.status(404).send();
 
-        res.status(200).send(employee);
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-});
+            res.status(200).send(employee);
+        } catch (error) {
+            res.status(500).send(error.message);
+        }
+    });
 
-router.post('/create', role(['superAdmin']), async (req, res) => {
-    const employee = new Employee(req.body);
+router.post('/create',
+    authorizeAndPass(false),
+    setRouteRoles(['superAdmin']),
+    async (req, res) => {
+        const employee = new Employee(req.body);
 
-    try {
-        await employee.save();
-        res.status(200).send({ employee });
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-});
+        try {
+            await employee.save();
+            res.status(200).send({ employee });
+        } catch (error) {
+            res.status(500).send(error.message);
+        }
+    });
 
-router.post('/login', async (req, res) => {
-    try {
-        const employee = await Employee.findByCredentials(req.body.email, req.body.password);
-        const token = await employee.generateAuthToken();
-        res.status(200).send({ employee, token });
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-});
+router.post('/login',
+    async (req, res) => {
+        try {
+            const employee = await Employee.findByCredentials(req.body.email, req.body.password);
+            const token = await employee.generateAuthToken();
+            res.status(200).send({ employee, token });
+        } catch (error) {
+            res.status(500).send(error.message);
+        }
+    });
 
-router.post('/logout', authorization, async (req, res) => {
-    try {
-        req.employee.tokens = req.employee.tokens.filter(t => t.token !== req.token);
-        await req.employee.save();
+router.post('/logout',
+    authorizeAndPass(true),
+    async (req, res) => {
+        try {
+            req.app.locals.employee.tokens = req.app.locals.employee.tokens.filter(t => t.token !== req.app.locals.token);
+            await req.app.locals.employee.save();
 
-        res.status(200).send();
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-});
+            res.status(200).send();
+        } catch (error) {
+            res.status(500).send(error.message);
+        }
+    });
 
-router.post('/logoutAll', authorization, async (req, res) => {
-    try {
-        req.employee.tokens = [];
-        await req.employee.save();
+router.post('/logoutAll',
+    authorizeAndPass(true),
+    async (req, res) => {
+        try {
+            req.app.locals.employee.tokens = [];
+            await req.app.locals.employee.save();
 
-        res.status(200).send();
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-});
+            res.status(200).send();
+        } catch (error) {
+            res.status(500).send(error.message);
+        }
+    });
 
 module.exports = router;
