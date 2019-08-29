@@ -27,11 +27,11 @@ const employeeSchema = new mongoose.Schema({
         minlength: 6,
         trim: true
     },
-    roles: [{
-        role: {
-            type: String
-        }
-    }],
+    role: {
+        type: String,
+        enum: ['superuser', 'technical', 'sales'],
+        required: true
+    },
     tokens: [{
         token: {
             type: String,
