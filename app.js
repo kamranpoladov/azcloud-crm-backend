@@ -17,6 +17,11 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.use((req, res, next) => {
+    console.log(req.method, req.originalUrl);
+    next();
+})
+
 app.use((request, response, next) => {
     response.header('Access-Control-Allow-Origin', '*');
     response.header(

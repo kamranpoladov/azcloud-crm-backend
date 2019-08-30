@@ -7,18 +7,23 @@ const Lead = require('../../../db/models/leadModel');
 const Customer = require('../../../db/models/customerModel');
 const authorizeAndPass = require('../../middleware/authorization');
 const password = require('../../../config.json').password;
+const roles = require('../../middleware/roles');
 
 router.get('/',
     authorizeAndPass(true),
     async (req, res) => {
         try {
-            const leads = await Lead.find({});
-            const response = leads.map(lead => {
-            return {
-                ...lead._doc,
-                actions: lead.actions(employeeRole)
-            };
-        });
+            const employeeRole = req.app.locals.employee.role;
+
+			const leads = await Lead.find({});
+
+            const response = await Promise.all(leads.map(async (lead) => {
+				return {
+					...lead._doc,
+					actions: lead.actions(employeeRole),
+					companyName: await lead.getCompanyName()
+				};
+        }));
 
         res.status(200).send(response);
         } catch (error) {
@@ -26,8 +31,8 @@ router.get('/',
         }
     });
 
-router.post('/create', async (req, res) => {
-    req.body.progress = 10;
+router.post('/create', roles(['superuser', 'sales']), async (req, res) => {
+    req.body.status = '10%';
     const lead = new Lead(req.body);
 
     try {

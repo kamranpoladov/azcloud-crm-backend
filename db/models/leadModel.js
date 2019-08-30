@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Customer = require('./customerModel');
 
 const leadSchema = new mongoose.Schema({
     name: {
@@ -40,6 +41,11 @@ leadSchema.methods.actions = function (employeeRole) {
 
     return require('../../api/permissions.js')[employeeRole][leadStatus];
 };
+
+leadSchema.methods.getCompanyName = async function() {
+    const customer = await Customer.findById(this.customer);
+    return customer.companyName;
+}
 
 const Lead = mongoose.model('Lead', leadSchema);
 module.exports = Lead;

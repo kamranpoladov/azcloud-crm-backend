@@ -8,7 +8,7 @@ const roles = (roles) => {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             const employee = await Employee.findOne({ _id: decoded._id, 'tokens.token': token });
 
-            if (!employee || !employee.roles.some(r => roles.includes(r.role))) throw new Error('No valid permission');
+            if (!employee || !roles.includes(employee.role)) throw new Error('No valid permission');
 
             next();
         } catch (error) {
