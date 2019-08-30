@@ -28,21 +28,21 @@ router.get('/', async (request, response, next) => {
         .find({})
         .populate('children');
 
-    const result = clusters.map(cluster => {
-        const totalProcessingPower = cluster.totalProcessingPower;
-        let totalUsedProcessingPower;
+    const result = await Promise.all(clusters.map(async cluster => {
+        const totalProcessingPower = cluster.totalProcessingPower();
+        let totalUsedProcessingPower = 0;
 
-        totalUsedProcessingPower = cluster.children.reduce((accumulator, vs) => {
-            const vsClockSpeed = vs.getClockSpeedAndStorage().clockSpeed;
-            accumulator += vsClockSpeed * vs.cores;
-        }, 0);
+        await Promise.all(cluster.children.map(async vs => {
+            const vsClockSpeed = await vs.getClockSpeedAndStorage();
+            totalUsedProcessingPower += (vs.cores * vsClockSpeed.clockSpeed);
+        }))
 
         return {
             ...cluster._doc,
             totalProcessingPower,
             totalUsedProcessingPower
         };
-    });
+    }));
 
     response.status(200).send(result);
 });

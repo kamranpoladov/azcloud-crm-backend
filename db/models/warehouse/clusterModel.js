@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const VS = require('./virtualServerModel');
 
 const clusterSchema = new mongoose.Schema({
     name: {
