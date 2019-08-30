@@ -6,7 +6,7 @@ const nodemailer = require('nodemailer');
 const Lead = require('../../../db/models/leadModel');
 const Customer = require('../../../db/models/customerModel');
 const authorizeAndPass = require('../../middleware/authorization');
-const password = require('../../../config.json').password;
+//const password = require('../../../config.json').password;
 const roles = require('../../middleware/roles');
 
 router.get('/',
@@ -15,17 +15,17 @@ router.get('/',
         try {
             const employeeRole = req.app.locals.employee.role;
 
-			const leads = await Lead.find({});
+            const leads = await Lead.find({});
 
             const response = await Promise.all(leads.map(async (lead) => {
-				return {
-					...lead._doc,
-					actions: lead.actions(employeeRole),
-					companyName: await lead.getCompanyName()
-				};
-        }));
+                return {
+                    ...lead._doc,
+                    actions: lead.actions(employeeRole),
+                    companyName: await lead.getCompanyName()
+                };
+            }));
 
-        res.status(200).send(response);
+            res.status(200).send(response);
         } catch (error) {
             res.status(500).send(error.message);
         }
@@ -68,11 +68,11 @@ router.get('/:id/proposal', async (req, res) => {
         `
         pdf.create(html, { format: 'Letter' }).toFile('./proposals/proposal.pdf', (err, result) => {
             if (err) res.status(500).send();
-        })
+        });
 
         res.download('../../../proposals/proposal.pdf');
 
-        fs.readFile('../../../proposals/proposal.pdf', async (error, buffer) => {
+        /*fs.readFile('../../../proposals/proposal.pdf', async (error, buffer) => {
             let transporter = nodemailer.createTransport({
                 // host: 'icloud.com',
                 // port: 587,
@@ -95,7 +95,7 @@ router.get('/:id/proposal', async (req, res) => {
                 ]
             });
             res.status(200).send();
-        })
+        })*/
     } catch (error) {
         res.status(500).send(err.message);
     }
