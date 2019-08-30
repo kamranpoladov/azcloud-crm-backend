@@ -32,12 +32,13 @@ router.get('/', async (request, response, next) => {
     const result = await Promise.all(clusters.map(async cluster => {
         const totalProcessingPower = cluster.totalProcessingPower();
         let totalUsedProcessingPower = 0;
-        let customer, companyName;
+        let customer, companyNames = [];
+        const remaining = cluster.getRemaining();
 
         await Promise.all(cluster.children.map(async vs => {
             const vsClockSpeed = await vs.getClockSpeedAndStorage();
             customer = await Customer.findById(vs.customer);
-            companyName = customer.companyName;
+            companyNames.push(customer.companyName);
             totalUsedProcessingPower += (vs.cores * vsClockSpeed.clockSpeed);
         }));
 
@@ -45,7 +46,8 @@ router.get('/', async (request, response, next) => {
             ...cluster._doc,
             totalProcessingPower,
             totalUsedProcessingPower,
-            companyName
+            companyNames,
+            remaining
         };
     }));
 
