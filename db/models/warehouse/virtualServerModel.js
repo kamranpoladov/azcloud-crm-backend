@@ -23,14 +23,6 @@ const vsSchema = new mongoose.Schema({
     }
 });
 
-vsSchema.methods.getClockSpeedAndStorage = async function() {
-    const parent = await Cluster.findById(this.parent);
-    return {
-        clockSpeed: parent.clockSpeed,
-        storage: parent.storage
-    }
-}
-
 vsSchema.methods.getClockSpeedAndStorage = async function () {
     const parent = await Cluster.findById(this.parent);
     return {

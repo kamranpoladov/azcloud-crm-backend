@@ -23,8 +23,6 @@ router.post('/create', async (req, res) => {
     res.status(200).send(vs);
 })
 
-const Cluster = require('../../../db/models/warehouse/clusterModel');
-
 router.get('/', (request, response, next) => {
     const clusters = await Cluster
         .find({})
