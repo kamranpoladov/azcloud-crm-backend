@@ -32,10 +32,10 @@ clusterSchema.methods.totalProcessingPower = function () {
     return this.cores * this.clockSpeed;
 };
 
-clusterSchema.methods.getRemaining = function() {
+clusterSchema.methods.getRemaining = function () {
     Array.prototype.sum = function (prop) {
         var total = 0
-        for ( var i = 0, _len = this.length; i < _len; i++ ) {
+        for (var i = 0, _len = this.length; i < _len; i++) {
             total += this[i][prop]
         }
         return total
