@@ -32,12 +32,10 @@ router.get('/', async (request, response, next) => {
         const totalProcessingPower = cluster.totalProcessingPower;
         let totalUsedProcessingPower;
 
-        if (cluster.children) {
-            totalUsedProcessingPower = cluster.children.reduce((accumulator, vs) => {
-                const vsClockSpeed = vs.getClockSpeedAndStorage().clockSpeed;
-                accumulator += vsClockSpeed * vs.cores;
-            });
-        }
+        totalUsedProcessingPower = cluster.children.reduce((accumulator, vs) => {
+            const vsClockSpeed = vs.getClockSpeedAndStorage().clockSpeed;
+            accumulator += vsClockSpeed * vs.cores;
+        }, 0);
 
         return {
             ...cluster._doc,
