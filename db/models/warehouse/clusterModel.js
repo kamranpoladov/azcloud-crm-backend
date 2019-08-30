@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const VS = require('./virtualServerModel');
 
 const clusterSchema = new mongoose.Schema({
     name: {
@@ -13,7 +14,7 @@ const clusterSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    RAM: {
+    ram: {
         type: Number,
         required: true
     },

@@ -25,13 +25,13 @@ const vsSchema = new mongoose.Schema({
         required: true,
         ref: 'Cluster'
     },
-    owner: {
+    customer: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'Customer'
     }
 })
 
-const Vs = mongoose.model('Vs', vsSchema);
+const VS = mongoose.model('VS', vsSchema);
 
-module.exports = Vs;
+module.exports = VS;
