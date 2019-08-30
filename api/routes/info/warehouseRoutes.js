@@ -3,7 +3,7 @@ const router = new express.Router();
 
 const Cluster = require('../../../db/models/warehouse/clusterModel');
 
-router.get('/', (request, response, next) => {
+router.get('/', async (request, response, next) => {
     const clusters = await Cluster
         .find({})
         .populate('children');
