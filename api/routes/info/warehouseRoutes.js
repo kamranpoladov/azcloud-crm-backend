@@ -35,7 +35,7 @@ router.get('/', async (request, response, next) => {
         await Promise.all(cluster.children.map(async vs => {
             const vsClockSpeed = await vs.getClockSpeedAndStorage();
             totalUsedProcessingPower += (vs.cores * vsClockSpeed.clockSpeed);
-        }))
+        }));
 
         return {
             ...cluster._doc,
