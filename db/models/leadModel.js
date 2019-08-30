@@ -37,7 +37,7 @@ leadSchema.methods.actions = function (employeeRole) {
     return require('../../api/permissions.js')[employeeRole][leadStatus];
 };
 
-leadSchema.methods.getCompanyName = async function() {
+leadSchema.methods.getCompanyName = async function () {
     const customer = await Customer.findById(this.customer);
     if (customer == null)
         console.log(this.customer);
