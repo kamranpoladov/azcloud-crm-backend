@@ -22,8 +22,8 @@ router.get('/',
             const response = await Promise.all(leads.map(async (lead) => {
                 const _actions = lead.actions(employeeRole);
                 if (_actions.includes('fee')) {
-                    vs = await VS.findById(lead._id);
-                    fee = 100;
+                    vs = await VS.findById(lead.service);
+                    fee = await vs.feeAndVat();
                 }
 				return {
 					...lead._doc,
