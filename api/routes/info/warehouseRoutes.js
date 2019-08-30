@@ -10,12 +10,12 @@ router.post('/create', async (req, res) => {
         .save()
         .then(result => {
             return Cluster
-            .findByIdAndUpdate(vs.parent, {
-                $push: {
-                    children: vs._id
-                }
-            })
-            .exec();
+                .findByIdAndUpdate(vs.parent, {
+                    $push: {
+                        children: vs._id
+                    }
+                })
+                .exec();
         })
         .catch(error => {
             res.status(500).send(error.message);
@@ -30,10 +30,14 @@ router.get('/', async (request, response, next) => {
 
     const result = clusters.map(cluster => {
         const totalProcessingPower = cluster.totalProcessingPower;
-        const totalUsedProcessingPower = cluster.children.reduce((accumulator, vs) => {
-            const vsClockSpeed = vs.getClockSpeedAndStorage().clockSpeed;
-            accumulator += vsClockSpeed * vs.cores;
-        });
+        let totalUsedProcessingPower;
+
+        if (cluster.children) {
+            totalUsedProcessingPower = cluster.children.reduce((accumulator, vs) => {
+                const vsClockSpeed = vs.getClockSpeedAndStorage().clockSpeed;
+                accumulator += vsClockSpeed * vs.cores;
+            });
+        }
 
         return {
             ...cluster._doc,
