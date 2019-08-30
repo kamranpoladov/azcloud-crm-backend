@@ -23,7 +23,7 @@ router.post('/create', async (req, res) => {
     res.status(200).send(vs);
 })
 
-router.get('/', (request, response, next) => {
+router.get('/', async (request, response, next) => {
     const clusters = await Cluster
         .find({})
         .populate('children');
