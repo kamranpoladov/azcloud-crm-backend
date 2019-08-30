@@ -68,17 +68,20 @@ router.get('/:id/proposal', async (req, res) => {
     try {
         let lead = await Lead.findById(req.params.id);
         let customer = await Customer.findById(lead.customer);
-        // let service = await Service.findById(lead.service);
+        let service = await VS.findById(lead.service);
+
+        let _total  = await service.feeAndVat();
+        let total = _total.totalFee;
 
         const html = `
             <h1>Hi, ${customer.companyLegalName}</h1>
-            <h4>You can purchase <i>service name once warehouse created</i> only for ${lead.calculateTotalAmount()}</h4>
+            <h4>You can purchase <i>${service.cores} cores and ${service.ram} GB of RAM</i> only for ${total}</h4>
         `
         pdf.create(html, { format: 'Letter' }).toFile('./proposals/proposal.pdf', (err, result) => {
             if (err) res.status(500).send();
         });
 
-        res.download('../../../proposals/proposal.pdf');
+        res.download('./proposals/proposal.pdf');
 
         /*fs.readFile('../../../proposals/proposal.pdf', async (error, buffer) => {
             let transporter = nodemailer.createTransport({
@@ -105,7 +108,7 @@ router.get('/:id/proposal', async (req, res) => {
             res.status(200).send();
         })*/
     } catch (error) {
-        res.status(500).send(err.message);
+        res.status(500).send(error.message);
     }
 });
 

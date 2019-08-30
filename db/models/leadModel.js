@@ -31,11 +31,6 @@ const leadSchema = new mongoose.Schema({
     }
 });
 
-leadSchema.methods.calculateTotalAmount = function () {
-    // before warehouse is created
-    return 1000;
-};
-
 leadSchema.methods.actions = function (employeeRole) {
     const leadStatus = this.status;
 
