@@ -5,6 +5,7 @@ const pdf = require('html-pdf');
 const nodemailer = require('nodemailer');
 const Lead = require('../../../db/models/leadModel');
 const Customer = require('../../../db/models/customerModel');
+const VS = require('../../../db/models/warehouse/virtualServerModel');
 const authorizeAndPass = require('../../middleware/authorization');
 const password = require('../../../config.json').password;
 const roles = require('../../middleware/roles');
@@ -15,13 +16,20 @@ router.get('/',
         try {
             const employeeRole = req.app.locals.employee.role;
 
-			const leads = await Lead.find({});
+            const leads = await Lead.find({});
+            let vs, fee;
 
             const response = await Promise.all(leads.map(async (lead) => {
+                const _actions = lead.actions(employeeRole);
+                if (_actions.includes('fee')) {
+                    vs = await VS.findById(lead._id);
+                    fee = 100;
+                }
 				return {
 					...lead._doc,
 					actions: lead.actions(employeeRole),
-					companyName: await lead.getCompanyName()
+                    companyName: await lead.getCompanyName(),
+                    fee
 				};
         }));
 

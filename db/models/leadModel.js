@@ -9,7 +9,7 @@ const leadSchema = new mongoose.Schema({
     },
     service: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Service',
+        ref: 'VS',
         required: true
     },
     startDate: {
