@@ -28,18 +28,14 @@ router.get('/', async (request, response, next) => {
         .find({})
         .populate('children');
 
-    const result = await Promise.all(clusters.map((cluster) => {
-        const totalProcessingPower = cluster.totalProcessingPower;
+    const result = await Promise.all(clusters.map(async cluster => {
+        const totalProcessingPower = cluster.totalProcessingPower();
+        let totalUsedProcessingPower = 0;
 
-        const totalUsedProcessingPower = await cluster.children.reduce(async (accumulator, vs) => {
-            const vsClockSpeed = (await vs.getClockSpeedAndStorage()).clockSpeed;
-            const usedProcessingPower = vsClockSpeed * vs.cores;
-            console.log(usedProcessingPower);
-            accumulator += usedProcessingPower;
-        }, 0);
-
-        console.log(totalUsedProcessingPower);
-        console.log();
+        await Promise.all(cluster.children.map(async vs => {
+            const vsClockSpeed = await vs.getClockSpeedAndStorage();
+            totalUsedProcessingPower += (vs.cores * vsClockSpeed.clockSpeed);
+        }));
 
         return {
             ...cluster._doc,
