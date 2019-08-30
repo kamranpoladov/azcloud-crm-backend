@@ -50,7 +50,7 @@ vsSchema.methods.feeAndVat = async function () {
 
     const fee = Math.round(Math.sqrt(basicPricePerCore * this.cores + basicPricePerRam * this.ram) * performanceCategory * 100) / 100;
     const vat = Math.round(fee * vatPercentage * 100) / 100;
-    const totalFee = fee + vat;
+    const totalFee = Math.round((fee + vat) * 100) / 100;
 
     return {
         fee,
