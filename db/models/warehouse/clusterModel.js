@@ -29,4 +29,8 @@ const clusterSchema = new mongoose.Schema({
     }]
 });
 
+clusterSchema.methods.totalProcessingPower = function () {
+    return this.cores * this.clockSpeed;
+};
+
 module.exports = mongoose.model('Cluster', clusterSchema);
