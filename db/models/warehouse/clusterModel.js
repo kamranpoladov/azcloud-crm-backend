@@ -29,4 +29,4 @@ const clusterSchema = new mongoose.Schema({
     }]
 });
 
-module.exports = mongoose.Model('Cluster', clusterSchema);
+module.exports = mongoose.model('Cluster', clusterSchema);

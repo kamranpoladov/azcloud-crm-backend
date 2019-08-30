@@ -3,21 +3,12 @@ const Customer = require('../customerModel');
 const Cluster = require('./clusterModel');
 
 const vsSchema = new mongoose.Schema({
-    clockSpeed: {
-        type: Number,
-        required: true
-    },
     cores: {
         type: Number,
         required: true
     },
     ram: {
         type: Number,
-        required: true
-    },
-    storage: {
-        type: String,
-        enum: ['7.2k', '10k', 'ssd'],
         required: true
     },
     parent: {
@@ -30,7 +21,15 @@ const vsSchema = new mongoose.Schema({
         required: true,
         ref: 'Customer'
     }
-})
+});
+
+vsSchema.methods.getClockSpeedAndStorage = async function() {
+    const parent = await Cluster.findById(this.parent);
+    return {
+        clockSpeed: parent.clockSpeed,
+        storage: parent.storage
+    }
+}
 
 const VS = mongoose.model('VS', vsSchema);
 
