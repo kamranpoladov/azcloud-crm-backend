@@ -39,6 +39,8 @@ leadSchema.methods.actions = function (employeeRole) {
 
 leadSchema.methods.getCompanyName = async function() {
     const customer = await Customer.findById(this.customer);
+    if (customer == null)
+        console.log(this.customer);
     return customer.companyName;
 }
 
