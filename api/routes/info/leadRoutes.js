@@ -82,31 +82,6 @@ router.get('/:id/proposal', async (req, res) => {
         });
 
         res.download('./proposals/proposal.pdf');
-
-        /*fs.readFile('../../../proposals/proposal.pdf', async (error, buffer) => {
-            let transporter = nodemailer.createTransport({
-                // host: 'icloud.com',
-                // port: 587,
-                // secure: false,
-                auth: {
-                    user: 'kamranpoladov1803@icloud.com',
-                    pass: password
-                }
-            });
-            let info = await transporter.sendMail({
-                from: 'kamranpoladov1803@icloud.com',
-                to: '18kamranpoladov03@gmail.com',
-                subject: 'Proposal', // Subject line
-                html: '<b>View email attachment</b>', // html body
-                attachments: [
-                    {
-                        filename: 'proposal.pdf',
-                        content: buffer.toString('utf8')
-                    }
-                ]
-            });
-            res.status(200).send();
-        })*/
     } catch (error) {
         res.status(500).send(error.message);
     }
